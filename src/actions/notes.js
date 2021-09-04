@@ -3,7 +3,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { loadNotes } from "../helpers/loadNotes";
 import { types } from "../types/types";
 
-const db = getFirestore();
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -15,7 +14,7 @@ export const startNewNote = () => {
       date: new Date().getTime(),
     };
 
-    const doc = await addDoc(collection(db, `${uid}/journal/notes`), newNote);
+    const doc = await addDoc(collection(getFirestore(), `${uid}/journal/notes`), newNote);
     dispatch(activeNote(doc.id, newNote));
   };
 };
