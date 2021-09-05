@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase/firestore";
 import Swal from "sweetalert2";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { loadNotes } from "../helpers/loadNotes";
 import { types } from "../types/types";
 import { fileUpload } from "../helpers/fileUpload";
@@ -75,8 +75,33 @@ export const startUploading = (file) => {
   return async (dispatch, getState) => {
     const { active: activeNote } = getState().notes;
 
-    const fileUrl = await fileUpload(file);
+    Swal.fire({
+      title: "Uploading...",
+      text: "Please wait...",
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
-    console.log(fileUrl);
+    const fileUrl = await fileUpload(file);
+    activeNote.url = fileUrl;
+
+    dispatch(startSaveNote(activeNote));
+
+    Swal.close();
   };
 };
+
+export const startDeleting = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+
+    await deleteDoc(doc(getFirestore(), `${uid}/journal/notes/${id}`));
+    dispatch(deleteNote(id));
+  };
+};
+
+export const deleteNote = (id) => ({
+  type: types.notesDelete,
+  payload: id,
+});
