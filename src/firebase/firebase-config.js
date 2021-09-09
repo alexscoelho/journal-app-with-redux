@@ -3,7 +3,6 @@ import { getFirestore } from "firebase/firestore/lite";
 
 import { GoogleAuthProvider } from "firebase/auth";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyCyUHitjxEVO0xuubcJkkWqsCU2Mn8U7Nw",
   authDomain: "react-app-curso-56709.firebaseapp.com",
