@@ -14,14 +14,17 @@ export const startNewNote = () => {
       body: "",
       date: new Date().getTime(),
     };
+    try {
+      const doc = await addDoc(
+        collection(getFirestore(), `${uid}/journal/notes`),
+        newNote
+      );
+      dispatch(activeNote(doc.id, newNote));
 
-    const doc = await addDoc(
-      collection(getFirestore(), `${uid}/journal/notes`),
-      newNote
-    );
-    dispatch(activeNote(doc.id, newNote));
-
-    dispatch(addNewNote(doc.id, newNote));
+      dispatch(addNewNote(doc.id, newNote));
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 

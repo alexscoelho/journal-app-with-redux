@@ -1,5 +1,5 @@
 /** * @jest-environment node */
-
+const fs = require("fs");
 import configureStore from "redux-mock-store"; //ES6 modules
 import thunk from "redux-thunk";
 
@@ -16,28 +16,41 @@ const firebaseConfigTesting = {
 
 initializeApp(firebaseConfigTesting);
 
-import {
-  doc,
-  deleteDoc,
-  collection,
-  getDoc,
-  getDocs,
-} from "firebase/firestore";
+import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 
 import {
   startLoadingNotes,
   startNewNote,
   startSaveNote,
+  startUploading,
 } from "../../actions/notes";
 import { types } from "../../types/types";
+import { fileUpload } from "../../helpers/fileUpload";
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
+jest.mock("../../helpers/fileUpload", () => ({
+  fileUpload: jest.fn(() => {
+    return "https://hola-mundo.com/cosa.jpg";
+  }),
+}));
+
 const initState = {
   auth: {
     uid: "TESTING",
+  },
+  notes: {
+    active: {
+      id: "5mUdK9pOiFyNXPmL7ldr",
+      title: "Hola",
+      body: "Mundo",
+    },
   },
 };
 
@@ -117,5 +130,17 @@ describe("Pruebas con las acciones de notes", () => {
 
     const currentNote = notes.filter((_note) => _note.id === note.id);
     expect(currentNote[0].title).toBe(note.title);
+  });
+
+  test("startUploading debe de actualizar el url del entry", async () => {
+    const file = fs.writeFile(
+      "newfile.txt",
+      "Learn Node FS module",
+      function (err) {
+        if (err) throw err;
+      }
+    );
+
+    await store.dispatch(startUploading(file));
   });
 });
