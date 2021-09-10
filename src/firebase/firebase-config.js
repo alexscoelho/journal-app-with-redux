@@ -12,7 +12,11 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APPID,
 };
 
-initializeApp(firebaseConfig);
+if (process.env === "development") {
+  initializeApp(firebaseConfig);
+}
+// initializeApp(firebaseConfig);
+
 const db = getFirestore();
 
 const googleAuthProvider = new GoogleAuthProvider();
