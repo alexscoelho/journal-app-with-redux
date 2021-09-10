@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore/lite";
 import { GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCyUHitjxEVO0xuubcJkkWqsCU2Mn8U7Nw",
-  authDomain: "react-app-curso-56709.firebaseapp.com",
-  projectId: "react-app-curso-56709",
-  storageBucket: "react-app-curso-56709.appspot.com",
-  messagingSenderId: "583255371373",
-  appId: "1:583255371373:web:617fb21b388cf267c8d964",
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
 };
 
 initializeApp(firebaseConfig);
