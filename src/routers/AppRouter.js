@@ -10,9 +10,8 @@ import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { startLoadingNotes } from "../actions/notes";
 
-const auth = getAuth();
-
 export const AppRouter = () => {
+  const auth = getAuth();
   const dispatch = useDispatch();
 
   const [checking, setChecking] = useState(true);
